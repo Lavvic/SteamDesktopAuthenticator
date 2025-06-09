@@ -1,14 +1,14 @@
 {
+  "version": "2.0.0",
   "summary": {
     "title": "StellarPay Digital Banking",
     "owner": "StellarPay Security Team",
     "description": "Threat model for StellarPay's web-based digital payment platform using STRIDE.",
+  },
+  "detail": {
     "contributors": [
       "Ian"
     ],
-    "diagrams": []
-  },
-  "detail": {
     "diagrams": [
       {
         "title": "StellarPay Web Application Architecture",
@@ -199,6 +199,5 @@
         ]
       }
     ]
-  },
-  "version": "2.0.0"
+  }
 }
