@@ -1,14 +1,203 @@
 {
   "version": "2.4.1",
   "summary": {
-    "title": "New Threat Model",
-    "owner": "",
-    "description": "",
+    "title": "StellarPay Digital Banking",
+    "owner": "StellarPay Security Team",
+    "description": "Threat model for StellarPay's web-based digital payment platform using STRIDE.",
     "id": 0
   },
   "detail": {
     "contributors": [],
-    "diagrams": [],
+    "diagrams": [
+        {
+        "title": "StellarPay Web Application Architecture",
+        "id": "stellar-diagram-001",
+        "nodes": [
+          {
+            "id": "1",
+            "name": "User Browser",
+            "type": "ActorExternal",
+            "bounds": {
+              "x": 50,
+              "y": 100,
+              "height": 50,
+              "width": 100
+            }
+          },
+          {
+            "id": "2",
+            "name": "Web Application",
+            "type": "Process",
+            "bounds": {
+              "x": 200,
+              "y": 100,
+              "height": 70,
+              "width": 120
+            }
+          },
+          {
+            "id": "3",
+            "name": "Authentication Service",
+            "type": "Process",
+            "bounds": {
+              "x": 200,
+              "y": 200,
+              "height": 60,
+              "width": 120
+            }
+          },
+          {
+            "id": "4",
+            "name": "Database",
+            "type": "Store",
+            "bounds": {
+              "x": 400,
+              "y": 100,
+              "height": 70,
+              "width": 100
+            }
+          },
+          {
+            "id": "5",
+            "name": "Payment Gateway API",
+            "type": "Process",
+            "bounds": {
+              "x": 200,
+              "y": 300,
+              "height": 60,
+              "width": 140
+            }
+          },
+          {
+            "id": "6",
+            "name": "Notification System",
+            "type": "Process",
+            "bounds": {
+              "x": 400,
+              "y": 300,
+              "height": 60,
+              "width": 120
+            }
+          }
+        ],
+        "flows": [
+          {
+            "id": "f1",
+            "name": "Login Request",
+            "source": "1",
+            "target": "2"
+          },
+          {
+            "id": "f2",
+            "name": "Authenticate",
+            "source": "2",
+            "target": "3"
+          },
+          {
+            "id": "f3",
+            "name": "Query User Data",
+            "source": "2",
+            "target": "4"
+          },
+          {
+            "id": "f4",
+            "name": "Process Transaction",
+            "source": "2",
+            "target": "5"
+          },
+          {
+            "id": "f5",
+            "name": "Send Notification",
+            "source": "2",
+            "target": "6"
+          }
+        ],
+        "boundaries": [
+          {
+            "id": "b1",
+            "name": "Internet",
+            "bounds": {
+              "x": 40,
+              "y": 90,
+              "height": 100,
+              "width": 130
+            }
+          },
+          {
+            "id": "b2",
+            "name": "Internal Network",
+            "bounds": {
+              "x": 180,
+              "y": 80,
+              "height": 320,
+              "width": 380
+            }
+          }
+        ],
+        "threats": [
+          {
+            "id": "t1",
+            "title": "Credential Stuffing",
+            "type": "Spoofing",
+            "description": "Attackers use stolen or reused credentials to gain unauthorized access to user accounts.",
+            "severity": "High",
+            "target": "1",
+            "mitigation": "Enforce strong password policies, enable multi-factor authentication (MFA), implement account lockout, and monitor for credential reuse.",
+            "status": "Mitigated"
+          },
+          {
+            "id": "t2",
+            "title": "Tampering With Transactions",
+            "type": "Tampering",
+            "description": "Unauthorized modification of transaction data during communication between the client and the payment gateway.",
+            "severity": "High",
+            "target": "f4",
+            "mitigation": "Use end-to-end encryption (TLS), validate transaction data integrity using MACs or digital signatures.",
+            "status": "Mitigated"
+          },
+          {
+            "id": "t3",
+            "title": "Data Leak from Database",
+            "type": "Information Disclosure",
+            "description": "Exposure of sensitive personal and financial data due to inadequate encryption or access control in the database.",
+            "severity": "Critical",
+            "target": "4",
+            "mitigation": "Encrypt all sensitive data at rest, apply strict access controls, use database activity monitoring.",
+            "status": "Mitigated"
+          },
+          {
+            "id": "t4",
+            "title": "Lack of Audit Logs",
+            "type": "Repudiation",
+            "description": "Inadequate logging of user activity prevents accountability and detection of fraud or misuse.",
+            "severity": "Medium",
+            "target": "2",
+            "mitigation": "Implement comprehensive, tamper-evident logging for all critical actions and store logs securely.",
+            "status": "Mitigated"
+          },
+          {
+            "id": "t5",
+            "title": "API Abuse - Denial of Service",
+            "type": "Denial of Service",
+            "description": "Exploitation of the public API by flooding it with requests, leading to degraded performance or downtime.",
+            "severity": "Medium",
+            "target": "5",
+            "mitigation": "Implement rate limiting, IP throttling, WAF rules, and behavior-based anomaly detection.",
+            "status": "Mitigated"
+          },
+          {
+            "id": "t6",
+            "title": "Session Hijacking via XSS",
+            "type": "Elevation of Privilege",
+            "description": "Attackers exploit XSS vulnerabilities to steal session tokens and impersonate users.",
+            "severity": "High",
+            "target": "2",
+            "mitigation": "Sanitize user input, apply output encoding, use secure, HTTP-only cookies with SameSite attributes, and implement CSP headers.",
+            "status": "Mitigated"
+          }
+        ]
+      }
+    ],
     "diagramTop": 0,
     "reviewer": "",
     "threatTop": 0
